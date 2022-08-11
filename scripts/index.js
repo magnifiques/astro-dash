@@ -1,79 +1,24 @@
 const canvas = document.querySelector("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+canvas.width = 1024;
+canvas.height = 576;
 
 const canvasContext = canvas.getContext("2d");
 const gravity = 0.5;
 
-class Player {
-  constructor() {
-    this.position = {
-      x: 100,
-      y: 100,
-    };
-    this.velocity = {
-      x: 0,
-      y: 0,
-    };
-    this.width = 50;
-    this.height = 50;
-  }
-
-  draw() {
-    canvasContext.fillStyle = "red";
-    canvasContext.fillRect(
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    );
-  }
-
-  update() {
-    this.draw();
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-
-    if (this.position.y + this.height + this.velocity.y <= canvas.height) {
-      this.velocity.y += gravity;
-    } else {
-      this.velocity.y = 0;
-    }
-  }
-}
-
-class Platform {
-  constructor({ position }) {
-    this.position = {
-      x: position.x,
-      y: position.y,
-    };
-    this.width = 200;
-    this.height = 20;
-  }
-
-  draw() {
-    canvasContext.fillStyle = "blue";
-    canvasContext.fillRect(
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    );
-  }
-
-  update() {
-    this.draw();
-  }
-}
-
 let winOffset = 0;
 const astro = new Player();
 const platforms = [
-  new Platform({ position: { x: 200, y: 400 } }),
-  new Platform({ position: { x: 400, y: 600 } }),
+  new Platform({
+    position: { x: -1, y: 470 },
+    imgSrc: "../sprites/platform.png",
+  }),
+  new Platform({
+    position: { x: 577, y: 470 },
+    imgSrc: "../sprites/platform.png",
+  }),
 ];
+
 const keys = {
   left: {
     pressed: false,
@@ -85,14 +30,18 @@ const keys = {
 
 function animate() {
   requestAnimationFrame(animate);
-  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.fillStyle = "white";
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-  astro.update();
   platforms.forEach((platform) => {
     platform.update();
   });
+  astro.update();
   //platform.update();
 
+  if (astro.position.x === 100) {
+    keys.left.pressed = false;
+  }
   if (keys.left.pressed && astro.position.x > 100) {
     astro.velocity.x = -5;
   } else if (keys.right.pressed && astro.position.x < 400) {

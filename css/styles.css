@@ -5,6 +5,10 @@
   font-size: 10px;
 }
 
-canvas {
-  display: block;
+body {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
