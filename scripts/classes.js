@@ -37,13 +37,39 @@ class Player {
 }
 
 class Platform {
-  constructor({ position, imgSrc }) {
+  constructor({ position, image }) {
     this.position = {
       x: position.x,
       y: position.y,
     };
-    this.image = new Image();
-    this.image.src = imgSrc;
+    this.image = image;
+    this.width = this.image.width;
+    this.height = this.image.height;
+  }
+
+  draw() {
+    canvasContext.drawImage(this.image, this.position.x, this.position.y);
+    // canvasContext.fillStyle = "blue";
+    // canvasContext.fillRect(
+    //   this.position.x,
+    //   this.position.y,
+    //   this.width,
+    //   this.height
+    // );
+  }
+
+  update() {
+    this.draw();
+  }
+}
+
+class GenericObject {
+  constructor({ position, image }) {
+    this.position = {
+      x: position.x,
+      y: position.y,
+    };
+    this.image = image;
     this.width = this.image.width;
     this.height = this.image.height;
   }
