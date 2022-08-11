@@ -44,10 +44,10 @@ class Player {
 }
 
 class Platform {
-  constructor() {
+  constructor({ position }) {
     this.position = {
-      x: 200,
-      y: 300,
+      x: position.x,
+      y: position.y,
     };
     this.width = 200;
     this.height = 20;
@@ -69,7 +69,10 @@ class Platform {
 }
 
 const astro = new Player();
-const platform = new Platform();
+const platforms = [
+  new Platform({ position: { x: 200, y: 400 } }),
+  new Platform({ position: { x: 400, y: 600 } }),
+];
 const keys = {
   left: {
     pressed: false,
@@ -84,35 +87,47 @@ function animate() {
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
   astro.update();
-  platform.update();
+  platforms.forEach((platform) => {
+    platform.update();
+  });
+  //platform.update();
 
-  if (keys.left.pressed) {
+  if (keys.left.pressed && astro.position.x > 100) {
     astro.velocity.x = -5;
-  } else if (keys.right.pressed) {
+  } else if (keys.right.pressed && astro.position.x < 400) {
     astro.velocity.x = 5;
   } else {
     astro.velocity.x = 0;
+    if (keys.right.pressed) {
+      platforms.forEach((platform) => {
+        platform.position.x -= 5;
+      });
+    } else if (keys.left.pressed) {
+      platforms.forEach((platform) => {
+        platform.position.x += 5;
+      });
+    }
   }
-
-  if (
-    astro.position.y + astro.height <= platform.position.y &&
-    astro.position.y + astro.height + astro.velocity.y >= platform.position.y &&
-    astro.position.x + astro.width >= platform.position.x &&
-    astro.position.x <= platform.position.x + platform.width
-  ) {
-    astro.velocity.y = 0;
-  }
+  platforms.forEach((platform) => {
+    if (
+      astro.position.y + astro.height <= platform.position.y &&
+      astro.position.y + astro.height + astro.velocity.y >=
+        platform.position.y &&
+      astro.position.x + astro.width >= platform.position.x &&
+      astro.position.x <= platform.position.x + platform.width
+    ) {
+      astro.velocity.y = 0;
+    }
+  });
 }
 
 animate();
 
 addEventListener("keydown", (event) => {
-  console.log(event);
   if (event.repeat) return;
 
   switch (event.code) {
     case "KeyW":
-      console.log("up");
       astro.velocity.y = -10;
       break;
 
@@ -122,38 +137,30 @@ addEventListener("keydown", (event) => {
       break;
 
     case "KeyD":
-      console.log("right");
       keys.right.pressed = true;
       break;
 
     case "KeyS":
-      console.log("down");
       break;
   }
 });
 
 addEventListener("keyup", (event) => {
-  console.log(event);
-
   if (event.repeat) return;
   switch (event.code) {
     case "KeyW":
-      console.log("up");
       astro.velocity.y = -10;
       break;
 
     case "KeyA":
-      console.log("left");
       keys.left.pressed = false;
       break;
 
     case "KeyD":
-      console.log("right");
       keys.right.pressed = false;
       break;
 
     case "KeyS":
-      console.log("down");
       break;
   }
 });
