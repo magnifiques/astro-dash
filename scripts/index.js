@@ -68,6 +68,7 @@ class Platform {
   }
 }
 
+let winOffset = 0;
 const astro = new Player();
 const platforms = [
   new Platform({ position: { x: 200, y: 400 } }),
@@ -101,10 +102,12 @@ function animate() {
     if (keys.right.pressed) {
       platforms.forEach((platform) => {
         platform.position.x -= 5;
+        winOffset += 5;
       });
     } else if (keys.left.pressed) {
       platforms.forEach((platform) => {
         platform.position.x += 5;
+        winOffset -= 5;
       });
     }
   }
@@ -119,6 +122,10 @@ function animate() {
       astro.velocity.y = 0;
     }
   });
+
+  if (winOffset >= 20000) {
+    console.log("You've won");
+  }
 }
 
 animate();
