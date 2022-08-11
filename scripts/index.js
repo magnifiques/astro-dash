@@ -43,7 +43,33 @@ class Player {
   }
 }
 
+class Platform {
+  constructor() {
+    this.position = {
+      x: 200,
+      y: 300,
+    };
+    this.width = 200;
+    this.height = 20;
+  }
+
+  draw() {
+    canvasContext.fillStyle = "blue";
+    canvasContext.fillRect(
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+  }
+
+  update() {
+    this.draw();
+  }
+}
+
 const astro = new Player();
+const platform = new Platform();
 const keys = {
   left: {
     pressed: false,
@@ -56,13 +82,25 @@ const keys = {
 function animate() {
   requestAnimationFrame(animate);
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
   astro.update();
+  platform.update();
+
   if (keys.left.pressed) {
     astro.velocity.x = -5;
   } else if (keys.right.pressed) {
     astro.velocity.x = 5;
   } else {
     astro.velocity.x = 0;
+  }
+
+  if (
+    astro.position.y + astro.height <= platform.position.y &&
+    astro.position.y + astro.height + astro.velocity.y >= platform.position.y &&
+    astro.position.x + astro.width >= platform.position.x &&
+    astro.position.x <= platform.position.x + platform.width
+  ) {
+    astro.velocity.y = 0;
   }
 }
 
