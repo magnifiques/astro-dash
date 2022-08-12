@@ -109,6 +109,13 @@ function animate() {
   if (winOffset >= 20000) {
     console.log("You've won");
   }
+  //!Lose Condition
+  if (astro.position.y >= 526) {
+    astro.dead = true;
+    document.querySelector("#verdict").style.opacity = 1;
+    document.querySelector("#verdict").innerHTML =
+      "Game Over!<br />Please reload the page to play again!";
+  }
 }
 
 animate();
@@ -116,22 +123,24 @@ animate();
 addEventListener("keydown", (event) => {
   if (event.repeat) return;
 
-  switch (event.code) {
-    case "KeyW":
-      astro.velocity.y = -10;
-      break;
+  if (!astro.dead) {
+    switch (event.code) {
+      case "KeyW":
+        astro.velocity.y = -10;
+        break;
 
-    case "KeyA":
-      console.log("left");
-      keys.left.pressed = true;
-      break;
+      case "KeyA":
+        console.log("left");
+        keys.left.pressed = true;
+        break;
 
-    case "KeyD":
-      keys.right.pressed = true;
-      break;
+      case "KeyD":
+        keys.right.pressed = true;
+        break;
 
-    case "KeyS":
-      break;
+      case "KeyS":
+        break;
+    }
   }
 });
 

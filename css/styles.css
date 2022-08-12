@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-size: 10px;
+  font-family: "Press Start 2P", cursive;
 }
 
 body {
@@ -11,4 +12,24 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+
+.main {
+  position: relative;
+  display: inline-block;
+}
+
+.verdict {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: white;
+  font-size: 2rem;
+  opacity: 0;
+  text-align: center;
 }
