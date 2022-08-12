@@ -145,9 +145,7 @@ function animate() {
   });
 
   astro.update();
-  // if (astro.position.x === 100) {
-  //   keys.left.pressed = false;
-  // }
+
   if (
     (keys.left.pressed && astro.position.x > 100) ||
     (keys.left.pressed && winOffset === 0 && astro.position.x > 20)
@@ -156,7 +154,7 @@ function animate() {
   } else if (keys.right.pressed && astro.position.x < 400) {
     astro.velocity.x = astro.speed;
   } else {
-    astro.velocity.x = 0;
+    astro.velocity.x *= 0.9;
     if (keys.right.pressed) {
       platforms.forEach((platform) => {
         platform.position.x -= astro.speed;
