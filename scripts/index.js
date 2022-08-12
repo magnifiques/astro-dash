@@ -7,10 +7,14 @@ const canvasContext = canvas.getContext("2d");
 const gravity = 0.5;
 
 const platformImage = createImageObject("../sprites/platform.png");
+const smallPlatformImage = createImageObject(
+  "../sprites/platformSmallTall.png"
+);
 const backgroundImage = createImageObject("../sprites/background.png");
 const hillsImage = createImageObject("../sprites/hills.png");
 
 let winOffset = 0;
+let number = 1;
 const astro = new Player();
 
 const platforms = [
@@ -20,6 +24,25 @@ const platforms = [
   }),
   new Platform({
     position: { x: platformImage.width - 3, y: 470 },
+    image: platformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 1) + 300, y: 470 },
+    image: platformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 2) + 600, y: 470 },
+    image: platformImage,
+  }),
+  new Platform({
+    position: {
+      x: platformImage.width * (number + 2) + 600 + smallPlatformImage.width,
+      y: 244,
+    },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 3) + 1000, y: 470 },
     image: platformImage,
   }),
 ];
@@ -69,15 +92,15 @@ function animate() {
   //   keys.left.pressed = false;
   // }
   if (keys.left.pressed && astro.position.x > 100) {
-    astro.velocity.x = -5;
+    astro.velocity.x = -astro.speed;
   } else if (keys.right.pressed && astro.position.x < 400) {
-    astro.velocity.x = 5;
+    astro.velocity.x = astro.speed;
   } else {
     astro.velocity.x = 0;
     if (keys.right.pressed) {
       platforms.forEach((platform) => {
         platform.position.x -= 5;
-        winOffset += 5;
+        winOffset += astro.speed;
       });
 
       genericObjects.forEach((genOb) => {
@@ -86,7 +109,7 @@ function animate() {
     } else if (keys.left.pressed) {
       platforms.forEach((platform) => {
         platform.position.x += 5;
-        winOffset -= 5;
+        winOffset -= astro.speed;
       });
 
       genericObjects.forEach((genOb) => {
@@ -126,7 +149,7 @@ addEventListener("keydown", (event) => {
   if (!astro.dead) {
     switch (event.code) {
       case "KeyW":
-        astro.velocity.y = -10;
+        astro.velocity.y = -15;
         break;
 
       case "KeyA":
@@ -146,10 +169,11 @@ addEventListener("keydown", (event) => {
 
 addEventListener("keyup", (event) => {
   if (event.repeat) return;
+
   switch (event.code) {
     case "KeyW":
-      astro.velocity.y = -10;
-      break;
+      if (!astro.dead) {
+      }
 
     case "KeyA":
       keys.left.pressed = false;
