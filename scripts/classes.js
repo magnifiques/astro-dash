@@ -62,7 +62,6 @@ class Player {
 
   update() {
     this.draw();
-    console.log(this.currentImage, this.cropWidth, this.width);
     if (
       this.currentFrame > 58 &&
       (this.currentImage === this.sprites.idleRight.image ||
@@ -83,8 +82,6 @@ class Player {
 
     if (this.position.y + this.height + this.velocity.y <= canvas.height) {
       this.velocity.y += gravity;
-    } else {
-      this.velocity.y = 0;
     }
   }
 }

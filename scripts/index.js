@@ -12,6 +12,7 @@ const smallPlatformImage = createImageObject(
 );
 const backgroundImage = createImageObject("../sprites/background.png");
 const hillsImage = createImageObject("../sprites/hills.png");
+const houseImage = createImageObject("../sprites/houses.png");
 
 let winOffset = 0;
 let number = 1;
@@ -21,6 +22,14 @@ const platforms = [
   new Platform({
     position: { x: -1, y: 470 },
     image: platformImage,
+  }),
+  new Platform({
+    position: { x: 10, y: 244 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width + 40, y: 244 },
+    image: smallPlatformImage,
   }),
   new Platform({
     position: { x: platformImage.width - 3, y: 470 },
@@ -44,6 +53,53 @@ const platforms = [
   new Platform({
     position: { x: platformImage.width * (number + 3) + 1000, y: 470 },
     image: platformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 4) + 1320, y: 250 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 4) + 2000, y: 470 },
+    image: platformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 2400, y: 250 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 3200, y: 200 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 3900, y: 300 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 4800, y: 210 },
+    image: smallPlatformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 5400, y: 470 },
+    image: smallPlatformImage,
+  }),
+
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 6300, y: 470 },
+    image: smallPlatformImage,
+  }),
+
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 7000, y: 470 },
+    image: platformImage,
+  }),
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 7500, y: 470 },
+    image: platformImage,
+  }),
+
+  new Platform({
+    position: { x: platformImage.width * (number + 5) + 7200, y: 219 },
+    image: houseImage,
   }),
 ];
 
@@ -133,9 +189,14 @@ function animate() {
     }
   });
 
-  if (winOffset >= 20000) {
-    console.log("You've won");
+  //* Win Scenario
+  if (winOffset >= 198000) {
+    astro.dead = true;
+    document.querySelector("#verdict").style.opacity = 1;
+    document.querySelector("#verdict").innerHTML =
+      "Congratulations! <br />You've Cleared the level!<br />Please reload the page to play again!";
   }
+
   //!Lose Condition
   if (astro.position.y >= 526) {
     astro.dead = true;
