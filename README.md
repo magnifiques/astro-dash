@@ -1,5 +1,5 @@
 # astro-dash
-An infinite platformer game based on Nintendo's critically acclaimed video game franchise "Mario". Built solely using vanilla Javascript
+A platformer game based on Nintendo's critically acclaimed video game franchise "Mario". Built solely using vanilla Javascript
 
 # Controls:
 ## W: Jump 🦘
