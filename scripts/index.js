@@ -73,6 +73,8 @@ const keys = {
   },
 };
 
+let lastKey;
+
 function animate() {
   requestAnimationFrame(animate);
   canvasContext.fillStyle = "white";
@@ -87,11 +89,13 @@ function animate() {
   });
 
   astro.update();
-
   // if (astro.position.x === 100) {
   //   keys.left.pressed = false;
   // }
-  if (keys.left.pressed && astro.position.x > 100) {
+  if (
+    (keys.left.pressed && astro.position.x > 100) ||
+    (keys.left.pressed && winOffset === 0 && astro.position.x > 20)
+  ) {
     astro.velocity.x = -astro.speed;
   } else if (keys.right.pressed && astro.position.x < 400) {
     astro.velocity.x = astro.speed;
@@ -99,21 +103,21 @@ function animate() {
     astro.velocity.x = 0;
     if (keys.right.pressed) {
       platforms.forEach((platform) => {
-        platform.position.x -= 5;
+        platform.position.x -= astro.speed;
         winOffset += astro.speed;
       });
 
       genericObjects.forEach((genOb) => {
-        genOb.position.x -= 3;
+        genOb.position.x -= astro.speed * 0.66;
       });
-    } else if (keys.left.pressed) {
+    } else if (keys.left.pressed && winOffset > 0) {
       platforms.forEach((platform) => {
-        platform.position.x += 5;
+        platform.position.x += astro.speed;
         winOffset -= astro.speed;
       });
 
       genericObjects.forEach((genOb) => {
-        genOb.position.x += 3;
+        genOb.position.x += astro.speed * 0.66;
       });
     }
   }
@@ -139,6 +143,40 @@ function animate() {
     document.querySelector("#verdict").innerHTML =
       "Game Over!<br />Please reload the page to play again!";
   }
+
+  if (
+    keys.right.pressed &&
+    lastKey === "right" &&
+    astro.currentImage !== astro.sprites.runRight.image
+  ) {
+    astro.currentImage = astro.sprites.runRight.image;
+    astro.cropWidth = astro.sprites.runRight.cropWidth;
+    astro.width = astro.sprites.runRight.currentWidth;
+  } else if (
+    keys.left.pressed &&
+    lastKey === "left" &&
+    astro.currentImage !== astro.sprites.runLeft.image
+  ) {
+    astro.currentImage = astro.sprites.runLeft.image;
+    astro.cropWidth = astro.sprites.runLeft.cropWidth;
+    astro.width = astro.sprites.runLeft.currentWidth;
+  } else if (
+    !keys.right.pressed &&
+    lastKey === "right" &&
+    astro.currentImage !== astro.sprites.idleRight.image
+  ) {
+    astro.currentImage = astro.sprites.idleRight.image;
+    astro.cropWidth = astro.sprites.idleRight.cropWidth;
+    astro.width = astro.sprites.idleRight.currentWidth;
+  } else if (
+    !keys.left.pressed &&
+    lastKey === "left" &&
+    astro.currentImage !== astro.sprites.idleLeft.image
+  ) {
+    astro.currentImage = astro.sprites.idleLeft.image;
+    astro.cropWidth = astro.sprites.idleLeft.cropWidth;
+    astro.width = astro.sprites.idleLeft.currentWidth;
+  }
 }
 
 animate();
@@ -153,15 +191,13 @@ addEventListener("keydown", (event) => {
         break;
 
       case "KeyA":
-        console.log("left");
         keys.left.pressed = true;
+        lastKey = "left";
         break;
 
       case "KeyD":
         keys.right.pressed = true;
-        break;
-
-      case "KeyS":
+        lastKey = "right";
         break;
     }
   }
@@ -173,6 +209,7 @@ addEventListener("keyup", (event) => {
   switch (event.code) {
     case "KeyW":
       if (!astro.dead) {
+        break;
       }
 
     case "KeyA":
@@ -181,9 +218,6 @@ addEventListener("keyup", (event) => {
 
     case "KeyD":
       keys.right.pressed = false;
-      break;
-
-    case "KeyS":
       break;
   }
 });

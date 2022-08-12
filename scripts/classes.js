@@ -9,14 +9,50 @@ class Player {
       x: 0,
       y: 0,
     };
-    this.width = 50;
-    this.height = 50;
+    this.height = 150;
     this.dead = false;
+    this.sprites = {
+      idleRight: {
+        image: createImageObject("../sprites/spriteStandRight.png"),
+        cropWidth: 177,
+        currentWidth: 66,
+      },
+
+      idleLeft: {
+        image: createImageObject("../sprites/spriteStandLeft.png"),
+        cropWidth: 177,
+        currentWidth: 66,
+      },
+
+      runRight: {
+        image: createImageObject("../sprites/spriteRunRight.png"),
+        cropWidth: 341,
+        currentWidth: 127.875,
+      },
+
+      runLeft: {
+        image: createImageObject("../sprites/spriteRunLeft.png"),
+        cropWidth: 341,
+        currentWidth: 127.875,
+      },
+    };
+
+    this.currentFrame = 0;
+
+    this.currentImage = this.sprites.idleRight.image;
+
+    this.cropWidth = this.sprites.idleRight.cropWidth;
+
+    this.width = this.sprites.idleRight.currentWidth;
   }
 
   draw() {
-    canvasContext.fillStyle = "red";
-    canvasContext.fillRect(
+    canvasContext.drawImage(
+      this.currentImage,
+      this.cropWidth * this.currentFrame,
+      0,
+      this.cropWidth,
+      400,
       this.position.x,
       this.position.y,
       this.width,
@@ -26,7 +62,22 @@ class Player {
 
   update() {
     this.draw();
-
+    console.log(this.currentImage, this.cropWidth, this.width);
+    if (
+      this.currentFrame > 58 &&
+      (this.currentImage === this.sprites.idleRight.image ||
+        this.currentImage === this.sprites.idleLeft.image)
+    ) {
+      this.currentFrame = 0;
+    } else if (
+      this.currentFrame > 28 &&
+      (this.currentImage === this.sprites.runRight.image ||
+        this.currentImage === this.sprites.runLeft.image)
+    ) {
+      this.currentFrame = 0;
+    } else {
+      this.currentFrame++;
+    }
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
