@@ -33,3 +33,22 @@ body {
   opacity: 0;
   text-align: center;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 1.5rem;
+  color: white;
+}
+
+.link {
+  color: red;
+  text-decoration: none;
+  transition: 0.7s all ease;
+}
+
+.link:hover {
+  color: yellow;
+  text-decoration: underline;
+  font-size: 1.2rem;
+}
